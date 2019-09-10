@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+        <form action="action.php" method="POST">
+            <fieldset>
+                <div id="header">
+                    CNPJ: &ensp;
+                    <select name="CNPJ" id="CNPJ">
+                        <option value="option01">Selecione um CNPJ</option>
+                    </select>
+                </div>
+                <div id="titles">
+                    <label for="area01">Ano</label>
+                    <label for="area02">Modelo</label>
+                    <label for="area03">Série</label>
+                    <label for="area04">Número Inicial</label>
+                    <label for="area05">Número Final</label>
+                    <label for="area06">Protocolo</label>
+                    <label for="area07">Data/Hora</label>
+                </div>
+                <div id="textareas">
+                    <textarea name="area01" id="area01"></textarea>
+                    <textarea name="area02" id="area02"></textarea>
+                    <textarea name="area03" id="area03"></textarea>
+                    <textarea name="area04" id="area04"></textarea>
+                    <textarea name="area05" id="area05"></textarea>
+                    <textarea name="area06" id="area06"></textarea>
+                    <textarea name="area07" id="area07"></textarea>
+                </div>
+                <br>
+                <div id="contadores">
+                    <div id="count01">0</div>
+                    <div id="count02">0</div>
+                    <div id="count03">0</div>
+                    <div id="count04">0</div>
+                    <div id="count05">0</div>
+                    <div id="count06">0</div>
+                    <div id="count07">0</div>
+                </div>
+                <input type="submit" value="Gerar" id="btGerar">
+            </fieldset>
+        </form>
+
+        <script type="text/javascript" src="JS/main.js"></script>
+</body>
+</html>

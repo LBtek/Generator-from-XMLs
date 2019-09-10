@@ -1,0 +1,35 @@
+form {
+    text-align: center;
+    display: flex;
+}
+
+fieldset {
+    margin: auto;
+}
+
+fieldset > div {
+    display: flex;
+}
+
+#titles > label {
+    flex: 1;
+}
+
+textarea {
+    resize: none;
+    min-height: 60vh;
+    max-height: 60vh;
+}
+
+#contadores div {
+    width: 14.285%;
+}
+
+#header, #contadores {
+    margin-bottom: 20px;
+}
+
+input[type="submit"] {
+    font-size: 1.7em;
+    padding: 0 30px;
+}
