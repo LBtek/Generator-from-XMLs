@@ -1,3 +1,5 @@
+var btGerar = document.querySelector("#btGerar");
+
 var div01 = document.querySelector("#count01");
 var div02 = document.querySelector("#count02");
 var div03 = document.querySelector("#count03");
@@ -44,15 +46,17 @@ function contador03(){
     var Linhas = area03.value.split("\n");
     div03.innerHTML = Linhas.length;
 }
-
+var array04 = [];
 function contador04(){ 
     var Linhas = area04.value.split("\n");
     div04.innerHTML = Linhas.length;
+    array04 = Linhas;
 }
-
+var array05 = [];
 function contador05(){ 
     var Linhas = area05.value.split("\n");
     div05.innerHTML = Linhas.length;
+    array05 = Linhas;
 }
 
 function contador06(){ 
@@ -64,3 +68,19 @@ function contador07(){
     var Linhas = area07.value.split("\n");
     div07.innerHTML = Linhas.length;
 }
+
+var msg = "Número Final diferente do Número Inicial!" + '\n\n' + "Não foram gerados os XML's das Notas:" + '\n\n' + "Número Inicial - Número Final";
+var msgFinish = msg;
+
+btGerar.onclick = function(){
+    for (key in array04) {
+        if(array04[key] != array05[key]) {
+            msgFinish = msgFinish + '\n' + array04[key] + " - " + array05[key];
+        }
+    }
+    if(msg != msgFinish) {
+        alert(msgFinish);
+        msgFinish = msg;
+    }   
+}
+

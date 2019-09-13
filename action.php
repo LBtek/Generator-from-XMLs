@@ -16,7 +16,8 @@
             $area05[$key] = trim($area05[$key]);
             $area06[$key] = trim($area06[$key]);
             $area07[$key] = trim($area07[$key]);
-        }
+        };
+
         $area01 = array_filter($area01);
         $area02 = array_filter($area02);
         $area03 = array_filter($area03);
@@ -32,7 +33,7 @@
         $area05 = array_values($area05);
         $area06 = array_values($area06);
         $area07 = array_values($area07);
-    }
+    };
 
     if ($_POST["area01"] != "" && $_POST["area02"] != "" && $_POST["area03"] != "" && $_POST["area04"] != "" && $_POST["area05"] != "" && $_POST["area06"] != "" && $_POST["area07"] != "" && count($area01) == count($area02) && count($area01) == count($area03) && count($area01) == count($area04) && count($area01) == count($area05) && count($area01) == count($area06) && count($area01) == count($area07)) {
         
@@ -44,18 +45,42 @@
                 fclose($fp);
             } else {
                 $msgErro = $msgErro.'\n'.$area04[$key]." - ".$area05[$key];
-            }   
-        }
+            };   
+        };
+
+        date_default_timezone_set('America/Cuiaba');
+        $fileName  = date('YmdHis').".zip";
+        $path      = __DIR__.'/XMLs';
+        $fullPath  = $path.'/'.$fileName;
+        $scanDir = scandir($path);
+        array_shift($scanDir);
+        array_shift($scanDir);
+        $zip = new \ZipArchive();
+
+        if( $zip->open($fullPath, \ZipArchive::CREATE) ){
+            foreach($scanDir as $file){
+                $zip->addFile($path.'/'.$file, $file);
+            }
+            $zip->close();
+        };
+
+        if(file_exists($fullPath)){
+            header('Content-Type: application/zip');
+            header('Content-Disposition: attachment; filename="'.$fileName.'"');
+            readfile($fullPath);
+            array_map('unlink', glob($path."/*.txt"));
+            unlink($fullPath);
+        };
+
         if ($msgErro != "Número Final diferente do Número Inicial!".'\n\n'."Não foram gerados os XML's das Notas:".'\n\n'."Número Inicial - Número Final") {
             $msg = "<script> alert(".'"'.$msgErro.'"'.") </script>";
             echo $msg;   
             echo "<script> window.location=".'"index.html"'." </script>";
-        } else {
-            echo "<script> alert(".'"Arquivos XMLs gerados com SUCESSO!"'.") </script>";
-            echo "<script> window.location=".'"index.html"'." </script>";
-        }
+        };
+
     } else {
-        echo "<script> alert(".'"ERRO: Por favor, verificar se todos os campos foram preenchidos corretamente!"'.") </script>";
-        echo "<script> window.location=".'"index.html"'." </script>";
-    }
+            echo "<script> alert(".'"ERRO: Por favor, verificar se todos os campos foram preenchidos corretamente!\n\nVerifique a contagem de itens se é igual em todos os campos."'.") </script>";
+            echo "<script> window.location=".'"index.html"'." </script>";
+};
+
 ?>
