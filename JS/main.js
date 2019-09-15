@@ -1,3 +1,4 @@
+var form = document.querySelector("#form");
 var btGerar = document.querySelector("#btGerar");
 
 var div01 = document.querySelector("#count01");
@@ -81,6 +82,15 @@ btGerar.onclick = function(){
     if(msg != msgFinish) {
         alert(msgFinish);
         msgFinish = msg;
-    }   
-}
+    }
 
+    var count = setInterval(() => {
+        var tmp = document.cookie;
+        console.log(tmp);
+
+        if (tmp == 'CookieTeste=teste') {
+            clearInterval(count);
+            window.location.reload();
+        }
+    }, 500);
+}

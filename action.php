@@ -64,6 +64,8 @@
             $zip->close();
         };
 
+        setcookie("CookieTeste", 'teste', time()+3600);
+
         if(file_exists($fullPath)){
             header('Content-Type: application/zip');
             header('Content-Disposition: attachment; filename="'.$fileName.'"');
@@ -73,8 +75,6 @@
         };
 
         if ($msgErro != "Número Final diferente do Número Inicial!".'\n\n'."Não foram gerados os XML's das Notas:".'\n\n'."Número Inicial - Número Final") {
-            $msg = "<script> alert(".'"'.$msgErro.'"'.") </script>";
-            echo $msg;   
             echo "<script> window.location=".'"index.html"'." </script>";
         };
 
