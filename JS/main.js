@@ -47,13 +47,17 @@ function contador03(){
     var Linhas = area03.value.split("\n");
     div03.innerHTML = Linhas.length;
 }
+
 var array04 = [];
+
 function contador04(){ 
     var Linhas = area04.value.split("\n");
     div04.innerHTML = Linhas.length;
     array04 = Linhas;
 }
+
 var array05 = [];
+
 function contador05(){ 
     var Linhas = area05.value.split("\n");
     div05.innerHTML = Linhas.length;
@@ -86,8 +90,6 @@ btGerar.onclick = function(){
 
     var count = setInterval(() => {
         var tmp = document.cookie;
-        console.log(tmp);
-
         if (tmp == 'CookieTeste=teste') {
             clearInterval(count);
             window.location.reload();

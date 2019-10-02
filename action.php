@@ -1,4 +1,5 @@
 <?php
+    // Recebendo valores do formulário e transformando em vetores, representando as linhas de cada campo
     $area01 = explode("\r\n", $_POST["area01"]);
     $area02 = explode("\r\n", $_POST["area02"]);
     $area03 = explode("\r\n", $_POST["area03"]);
@@ -6,7 +7,9 @@
     $area05 = explode("\r\n", $_POST["area05"]);
     $area06 = explode("\r\n", $_POST["area06"]);
     $area07 = explode("\r\n", $_POST["area07"]);
+    //----------------------------------------------------------------------------------------------------
 
+    //Limpando espaços em brancos no inicio e fim de cada valor do vetor, eliminando vetores vazios e reordenando os vetores resultantes.
     if (count($area01) == count($area02) && count($area01) == count($area03) && count($area01) == count($area04) && count($area01) == count($area05) && count($area01) == count($area06) && count($area01) == count($area07)) {
         foreach ($area01 as $key => $conteudo) {
             $area01[$key] = trim($conteudo);
@@ -34,20 +37,22 @@
         $area06 = array_values($area06);
         $area07 = array_values($area07);
     };
+    //----------------------------------------------------------------------------------------------------------------------------------------
 
-    if ($_POST["area01"] != "" && $_POST["area02"] != "" && $_POST["area03"] != "" && $_POST["area04"] != "" && $_POST["area05"] != "" && $_POST["area06"] != "" && $_POST["area07"] != "" && count($area01) == count($area02) && count($area01) == count($area03) && count($area01) == count($area04) && count($area01) == count($area05) && count($area01) == count($area06) && count($area01) == count($area07)) {
-        
-        $msgErro = "Número Final diferente do Número Inicial!".'\n\n'."Não foram gerados os XML's das Notas:".'\n\n'."Número Inicial - Número Final";
+    //Validando se atende os requisitos. Requsitos: Formulario com todos os campos devidamente preenchidos e número igual de linhas devidamente preenchidas. 
+    if ($area01[0] != "" && $area02[0] != "" && $area03[0] != "" && $area04[0] != "" && $area05[0] != "" && $area06[0] != "" && $area07[0] != "" && count($area01) == count($area02) && count($area01) == count($area03) && count($area01) == count($area04) && count($area01) == count($area05) && count($area01) == count($area06) && count($area01) == count($area07)) {
+
+        //verificando se o número inicial é igual ao número final (campos nº 04 e 05) e criando arquivos somente nas linhas que atendem a condição.
         foreach ($area04 as $key => $nomeArquivo) {
             if ($area04[$key] == $area05[$key]) {
                 $fp = fopen("XMLs/".$nomeArquivo.".txt", "w");
                     fwrite($fp, "Ano: ".$area01[$key]."\nModelo: ".$area02[$key]."\nSérie: ".$area03[$key]."\nNúmero Inicial: ".$area04[$key]."\nNúmero Final: ".$area05[$key]."\nProtocolo: ".$area06[$key]."\nData/Hora: ".$area07[$key]);
                 fclose($fp);
-            } else {
-                $msgErro = $msgErro.'\n'.$area04[$key]." - ".$area05[$key];
-            };   
+            };
         };
+        //---------------------------------------------------------------------------------------------------------------------------------------------
 
+        //Zipando arquivos e mandando para download.
         date_default_timezone_set('America/Cuiaba');
         $fileName  = date('YmdHis').".zip";
         $path      = __DIR__.'/XMLs';
@@ -64,7 +69,7 @@
             $zip->close();
         };
 
-        setcookie("CookieTeste", 'teste', time()+3600);
+        setcookie("CookieTeste", 'teste', time()+7); //Cookie para dar refresh na página pelo javascript após o download.
 
         if(file_exists($fullPath)){
             header('Content-Type: application/zip');
@@ -73,14 +78,18 @@
             array_map('unlink', glob($path."/*.txt"));
             unlink($fullPath);
         };
+        //------------------------------------------------------------------------------------------------------
 
-        if ($msgErro != "Número Final diferente do Número Inicial!".'\n\n'."Não foram gerados os XML's das Notas:".'\n\n'."Número Inicial - Número Final") {
+        //É um caso onde o usuário preenche apenas uma linha no formulário e o número inicial é diferente do número final, o que acaba não criando nenhum arquivo a ser baixado e devido a isso abre essa página php, o que por sua vez torna impossível dar o refresh ref. ao cookie no client-side, tendo que ser feito por aqui.
+        if((count($area04) == 1 && count($area05) == 1 && $area04[0] != $area05[0]) || isset($_COOKIE['CookieTeste'])){
             echo "<script> window.location=".'"index.html"'." </script>";
         };
+        //-----------------------------------------------------------------------------------------------------
 
+    //Mensagem de erro caso não seja atendido os requisitos da linha 43.    
     } else {
             echo "<script> alert(".'"ERRO: Por favor, verificar se todos os campos foram preenchidos corretamente!\n\nVerifique a contagem de itens se é igual em todos os campos."'.") </script>";
             echo "<script> window.location=".'"index.html"'." </script>";
-};
+    };//---------------------------------------------------------------------------------------------------------------
 
 ?>
