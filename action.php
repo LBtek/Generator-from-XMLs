@@ -1,4 +1,7 @@
 <?php
+
+    $CNPJ = $_POST["CNPJ"];
+
     // Recebendo valores do formulário e transformando em vetores, representando as linhas de cada campo
     $area01 = explode("\r\n", $_POST["area01"]);
     $area02 = explode("\r\n", $_POST["area02"]);
@@ -45,8 +48,8 @@
         //verificando se o número inicial é igual ao número final (campos nº 04 e 05) e criando arquivos somente nas linhas que atendem a condição.
         foreach ($area04 as $key => $nomeArquivo) {
             if ($area04[$key] == $area05[$key]) {
-                $fp = fopen("XMLs/".$nomeArquivo.".txt", "w");
-                    fwrite($fp, "Ano: ".$area01[$key]."\nModelo: ".$area02[$key]."\nSérie: ".$area03[$key]."\nNúmero Inicial: ".$area04[$key]."\nNúmero Final: ".$area05[$key]."\nProtocolo: ".$area06[$key]."\nData/Hora: ".$area07[$key]);
+                $fp = fopen("XMLs/".$nomeArquivo.".xml", "w");
+                    fwrite($fp, "<retInutNFe versao=".'"4.00"'."xmlns=".'"http://www.portalfiscal.inf.br/nfe"'."><infInut><tpAmb>1</tpAmb><verAplic>SVRSnfce201905151442</verAplic><cStat>102</cStat><xMotivo>Inutilizacao de numero homologado</xMotivo><cUF>15</cUF><ano>$area01[$key]</ano><CNPJ>$CNPJ</CNPJ><mod>$area02[$key]</mod><serie>$area03[$key]</serie><nNFIni>$area04[$key]</nNFIni><nNFFin>$area05[$key]</nNFFin><dhRecbto>$area07[$key]</dhRecbto><nProt>$area06[$key]</nProt></infInut></retInutNFe>");
                 fclose($fp);
             };
         };
@@ -75,7 +78,7 @@
             header('Content-Type: application/zip');
             header('Content-Disposition: attachment; filename="'.$fileName.'"');
             readfile($fullPath);
-            array_map('unlink', glob($path."/*.txt"));
+            array_map('unlink', glob($path."/*.xml"));
             unlink($fullPath);
         };
         //------------------------------------------------------------------------------------------------------

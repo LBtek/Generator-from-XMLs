@@ -1,6 +1,8 @@
 var form = document.querySelector("#form");
 var btGerar = document.querySelector("#btGerar");
 
+var CNPJ = document.querySelector("#CNPJ");
+
 var div01 = document.querySelector("#count01");
 var div02 = document.querySelector("#count02");
 var div03 = document.querySelector("#count03");
@@ -78,21 +80,29 @@ var msg = "Número Final diferente do Número Inicial!" + '\n\n' + "Não foram g
 var msgFinish = msg;
 
 btGerar.onclick = function(){
-    for (key in array04) {
-        if(array04[key] != array05[key]) {
-            msgFinish = msgFinish + '\n' + array04[key] + " - " + array05[key];
+    if(validarCNPJ(CNPJ.value)) {
+        for (key in array04) {
+            if(array04[key] != array05[key]) {
+                msgFinish = msgFinish + '\n' + array04[key] + " - " + array05[key];
+            }
         }
-    }
-    if(msg != msgFinish) {
-        alert(msgFinish);
-        msgFinish = msg;
-    }
-
-    var count = setInterval(() => {
-        var tmp = document.cookie;
-        if (tmp == 'CookieTeste=teste') {
-            clearInterval(count);
-            window.location.reload();
+        if(msg != msgFinish) {
+            alert(msgFinish);
+            msgFinish = msg;
         }
-    }, 500);
+    
+        var count = setInterval(() => {
+            var tmp = document.cookie;
+            if (tmp == 'CookieTeste=teste') {
+                clearInterval(count);
+                window.location.reload();
+            }
+        }, 500);
+    } else {
+        alert("CNPJ inválido!");
+        form.onsubmit = function (e) {
+            e.preventDefault();
+        }
+        window.location.reload();
+    }
 }
