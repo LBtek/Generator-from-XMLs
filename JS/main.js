@@ -99,10 +99,10 @@ btGerar.onclick = function(){
             }
         }, 500);
     } else {
-        alert("CNPJ inválido!");
+        alert("CNPJ inválido!\n" + CNPJ.value);
         form.onsubmit = function (e) {
             e.preventDefault();
         }
-        window.location.reload();
+        CNPJ.value = "";
     }
 }
