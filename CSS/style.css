@@ -21,8 +21,8 @@ textarea {
     max-height: 60vh;
 }
 
-#contadores div {
-    width: 14.285%;
+#contadores > div {
+    flex: 1;
 }
 
 #header, #contadores {
