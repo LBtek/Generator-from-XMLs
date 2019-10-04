@@ -44,24 +44,30 @@
 
     //Validando se atende os requisitos. Requsitos: Formulario com todos os campos devidamente preenchidos e número igual de linhas devidamente preenchidas. 
     if ($area01[0] != "" && $area02[0] != "" && $area03[0] != "" && $area04[0] != "" && $area05[0] != "" && $area06[0] != "" && $area07[0] != "" && count($area01) == count($area02) && count($area01) == count($area03) && count($area01) == count($area04) && count($area01) == count($area05) && count($area01) == count($area06) && count($area01) == count($area07)) {
-
+        
+        date_default_timezone_set('America/Cuiaba');
+        
         //verificando se o número inicial é igual ao número final (campos nº 04 e 05) e criando arquivos somente nas linhas que atendem a condição.
         foreach ($area04 as $key => $nomeArquivo) {
             if ($area04[$key] == $area05[$key]) {
                 $vt07 = explode(" ", $area07[$key]);
-                $area07[$key] = implode("-",array_reverse(explode("/", $vt07[0])))." $vt07[1]";
-                $area07[$key] = strtr($area07[$key], " ", "T");
+                $area07[$key] = implode("-",array_reverse(explode("/", $vt07[0])))."T".$vt07[1];
                 $area07[$key] = $area07[$key]."-03:00";
                 $area01[$key] = substr($area01[$key], -2);
                 $fp = fopen("XMLs/".$nomeArquivo.".xml", "w");
-                    fwrite($fp, "<retInutNFe versao=".'"4.00"'." xmlns=".'"http://www.portalfiscal.inf.br/nfe"'."><infInut><tpAmb>1</tpAmb><verAplic>SVRSnfce201905151442</verAplic><cStat>102</cStat><xMotivo>Inutilizacao de numero homologado</xMotivo><cUF>15</cUF><ano>$area01[$key]</ano><CNPJ>$CNPJ</CNPJ><mod>$area02[$key]</mod><serie>$area03[$key]</serie><nNFIni>$area04[$key]</nNFIni><nNFFin>$area05[$key]</nNFFin><dhRecbto>$area07[$key]</dhRecbto><nProt>$area06[$key]</nProt></infInut></retInutNFe>");
+                    if($area02[$key] == 65) {
+                        fwrite($fp, "<retInutNFe versao=".'"4.00"'." xmlns=".'"http://www.portalfiscal.inf.br/nfe"'."><infInut><tpAmb>1</tpAmb><verAplic>SVRSnfce201905151442</verAplic><cStat>102</cStat><xMotivo>Inutilizacao de numero homologado</xMotivo><cUF>15</cUF><ano>$area01[$key]</ano><CNPJ>$CNPJ</CNPJ><mod>$area02[$key]</mod><serie>$area03[$key]</serie><nNFIni>$area04[$key]</nNFIni><nNFFin>$area05[$key]</nNFFin><dhRecbto>$area07[$key]</dhRecbto><nProt>$area06[$key]</nProt></infInut></retInutNFe>");
+                    } elseif ($area02[$key] == 55) {
+                        fwrite($fp, "<retInutNFe versao=".'"4.00"'." xmlns=".'"http://www.portalfiscal.inf.br/nfe"'."><infInut Id=".'"ID'.date('YmdHis').'"'."><tpAmb>1</tpAmb><verAplic>SVRSnfce201905151442</verAplic><cStat>102</cStat><xMotivo>Inutilizacao de numero homologado</xMotivo><cUF>15</cUF><ano>$area01[$key]</ano><CNPJ>$CNPJ</CNPJ><mod>$area02[$key]</mod><serie>$area03[$key]</serie><nNFIni>$area04[$key]</nNFIni><nNFFin>$area05[$key]</nNFFin><dhRecbto>$area07[$key]</dhRecbto><nProt>$area06[$key]</nProt></infInut></retInutNFe>");
+                    } else {
+                        fwrite($fp, "Modelo $area02[$key] não suportado!");
+                    };
                 fclose($fp);
             };
         };
         //---------------------------------------------------------------------------------------------------------------------------------------------
 
         //Zipando arquivos e mandando para download.
-        date_default_timezone_set('America/Cuiaba');
         $fileName  = date('YmdHis').".zip";
         $path      = __DIR__.'/XMLs';
         $fullPath  = $path.'/'.$fileName;
