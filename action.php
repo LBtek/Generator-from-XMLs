@@ -60,7 +60,11 @@
                     } elseif ($area02[$key] == 55) {
                         fwrite($fp, "<retInutNFe versao=".'"4.00"'." xmlns=".'"http://www.portalfiscal.inf.br/nfe"'."><infInut Id=".'"ID'.date('YmdHis').'"'."><tpAmb>1</tpAmb><verAplic>SVRSnfce201905151442</verAplic><cStat>102</cStat><xMotivo>Inutilizacao de numero homologado</xMotivo><cUF>15</cUF><ano>$area01[$key]</ano><CNPJ>$CNPJ</CNPJ><mod>$area02[$key]</mod><serie>$area03[$key]</serie><nNFIni>$area04[$key]</nNFIni><nNFFin>$area05[$key]</nNFFin><dhRecbto>$area07[$key]</dhRecbto><nProt>$area06[$key]</nProt></infInut></retInutNFe>");
                     } else {
-                        fwrite($fp, "Modelo $area02[$key] não suportado!");
+                        fclose($fp);
+                        unlink("XMLs/$nomeArquivo.xml");
+                        $msgNotSupport = "Modelo ".'"'.$area02[$key].'"'." não suportado!";
+                        $fp = fopen("XMLs/$nomeArquivo - $msgNotSupport.txt", "w");
+                        fwrite($fp, $msgNotSupport);
                     };
                 fclose($fp);
             };
@@ -90,6 +94,7 @@
             header('Content-Disposition: attachment; filename="'.$fileName.'"');
             readfile($fullPath);
             array_map('unlink', glob($path."/*.xml"));
+            array_map('unlink', glob($path."/*.txt"));
             unlink($fullPath);
         };
         //------------------------------------------------------------------------------------------------------

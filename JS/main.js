@@ -95,7 +95,7 @@ btGerar.onclick = function(){
             var tmp = document.cookie;
             if (tmp == 'CookieTeste=teste') {
                 clearInterval(count);
-                window.location.reload();
+                window.location.reload(true);
             }
         }, 500);
     } else {
