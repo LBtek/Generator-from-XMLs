@@ -35,8 +35,8 @@ fieldset > div {
 
 textarea {
     resize: none;
-    min-height: 60vh;
-    max-height: 60vh;
+    min-height: 55vh;
+    max-height: 55vh;
     width: 13vw;
     min-width: 150px;
 }

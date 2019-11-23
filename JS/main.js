@@ -89,6 +89,7 @@ btGerar.onclick = function(){
         if(msg != msgFinish) {
             alert(msgFinish);
             msgFinish = msg;
+            document.formulario.submit();
         }
     
         var count = setInterval(() => {
